@@ -5,9 +5,9 @@ from extraction import KeyphraseExtractionPipeline
 
 
 class Item(BaseModel):
-    text:str
+    text: str
 
-    
+
 app = FastAPI()
 model_name = "ml6team/keyphrase-extraction-kbir-inspec"
 extractor = KeyphraseExtractionPipeline(model=model_name)
@@ -26,7 +26,8 @@ def root():
     </head>
     <body>
         <main>
-            <h2>Это ИИ приложение для курса 'Программная инженерия'</h2>
+            <h2>Это ИИ приложение для курса 'Программная 
+            инженерия'</h2>
             <h3><i>Данное приложение предназначено для определения ключевых фраз в научных текстах<h3><i>  
         </main>
     </body>
@@ -39,3 +40,4 @@ def root():
 def predict(item: Item):
     keyphrases = list(extractor(item.text))
     return {"keyphrases": keyphrases}
+  
