@@ -1,21 +1,12 @@
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
-from pydantic import BaseModel
-from extraction import KeyphraseExtractionPipeline
+from fastapi.testclient import TestClient
+from main import app
 
+client = TestClient(app)
 
-class Item(BaseModel):
-    text:str
-
-    
-app = FastAPI()
-model_name = "ml6team/keyphrase-extraction-kbir-inspec"
-extractor = KeyphraseExtractionPipeline(model=model_name)
-
-
-@app.get("/")
-def root():
-    html_page = """
+def test_read_main():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.content.decode() == """
     <!DOCTYPE html>
     <html lang="ru">
     <head>
@@ -32,10 +23,3 @@ def root():
     </body>
     </html>
     """
-    return HTMLResponse(content=html_page, status_code=200)
-
-
-@app.post("/predict/")
-def predict(item: Item):
-    keyphrases = list(extractor(item.text))
-    return {"keyphrases": keyphrases}
