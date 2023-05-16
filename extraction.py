@@ -16,9 +16,9 @@ class KeyphraseExtractionPipeline(TokenClassificationPipeline):
             **kwargs
         )
 
-    def postprocess(self, model_outputs):
+    def postprocess(self, all_outputs):
         results = super().postprocess(
-            model_outputs=model_outputs,
+            all_outputs=all_outputs,
             aggregation_strategy=AggregationStrategy.SIMPLE,
         )
         return np.unique([result.get("word").strip() for result in results])
