@@ -24,3 +24,10 @@ def test_read_main():
     </body>
     </html>
     """
+def test_predict():
+    response = client.post("/predict/",
+    json={"text":"Photoluminescence spectra of alumina single crystals were measured."})
+    json_data = response.json()
+
+    assert response.status_code == 200
+    assert json_data["keyphrases"] == ["Photoluminescence spectra","alumina single crystals"]
